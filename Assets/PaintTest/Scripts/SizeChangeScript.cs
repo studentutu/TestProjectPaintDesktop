@@ -11,6 +11,6 @@ public class SizeChangeScript : MonoBehaviour {
 
 	private void OnFiredInChangeSize(Color newColor){
 		this.GetComponent<Image>().color = newColor;
-		Debug.Log("From Size Change");
+		// Debug.Log("From Size Change");
 	}
 }

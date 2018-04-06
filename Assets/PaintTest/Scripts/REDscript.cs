@@ -5,14 +5,14 @@ using System;
 
 public class REDscript : MonoBehaviour {
 	private InputField myInput;
-	public delegate void MyDel(int variable);
-	public event MyDel redEvent;
+	public static event System.Action<int> redEvent;
 
 	void Start () {
 		myInput = this.GetComponent<InputField>();
-		myInput.onValueChanged.AddListener( delegate {OrdinaryFunc();});
+		myInput.onValueChanged.AddListener( delegate {onValueChanged();});
+		myInput.text = "255";
 	}
-	private void OrdinaryFunc(){
+	private void onValueChanged(){
 		int x;
 		if(myInput.text.All(char.IsDigit)){
 			if( Int32.TryParse(myInput.text, out x)){

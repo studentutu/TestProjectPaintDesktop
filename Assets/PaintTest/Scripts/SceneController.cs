@@ -31,11 +31,12 @@ public class SceneController : MonoBehaviour {
     [SerializeField] private Texture2D cursor;
 	#endregion
 	private bool _eraserMode = false;
+	public bool Screencapture = false;
 	private void Start(){
 
 		_eraserMode = false;
-		_eraser.onClick.AddListener( () => { ChangeMode(true); } );
-		_paintMode.onClick.AddListener( () => { ChangeMode(false); } );
+		_eraser.onClick.AddListener( () => { changeMode(true); } );
+		_paintMode.onClick.AddListener( () => { changeMode(false); } );
 
 		//Fetch the Raycaster from the GameObject (the Canvas)
         m_Raycaster = FindObjectOfType<GraphicRaycaster>();
@@ -43,39 +44,41 @@ public class SceneController : MonoBehaviour {
         m_EventSystem = FindObjectOfType<EventSystem>();
 
 		_brushSizeSlider.onValueChanged.AddListener( delegate {changedValueOnSlider();});
-		FindObjectOfType<REDscript>().redEvent += OnRedChange;
-		FindObjectOfType<GreenScript>().GreeEvent += OnGreenChan;
-		FindObjectOfType<BlueScript>().BlueEvent += OnBlueChan;
+		REDscript.redEvent += onRedChange;
+		GreenScript.GreeEvent += onGreenChan;
+		BlueScript.BlueEvent += onBlueChan;
 	}
 	private void changedValueOnSlider(){
 		w = (int)_brushSizeSlider.value;
 		h = w;
 	}
-	private void OnRedChange(int collor){
+	private void onRedChange(int collor){
 		Image temp = _colorPickerBTN.transform.GetChild(0).GetComponent<Image>();
-		temp.color = new Color( 1-((float)collor/255),temp.color.g, temp.color.b);
+		temp.color = new Color( ((float)collor/255),temp.color.g, temp.color.b);
 		_colorPicker = temp.color;
 		
 	}
-	private void OnGreenChan(int collor){
+	private void onGreenChan(int collor){
 		Image temp = _colorPickerBTN.transform.GetChild(0).GetComponent<Image>();
-		temp.color = new Color( temp.color.r,1-((float)collor/255), temp.color.b);
+		temp.color = new Color( temp.color.r,((float)collor/255), temp.color.b);
 		_colorPicker = temp.color;
 	}
-	private void OnBlueChan(int collor){
+	private void onBlueChan(int collor){
 		Image temp = _colorPickerBTN.transform.GetChild(0).GetComponent<Image>();
-		temp.color = new Color( temp.color.r, temp.color.g, 1-((float)collor/255));
+		temp.color = new Color( temp.color.r, temp.color.g, ((float)collor/255));
 		_colorPicker = temp.color;
 	}
 
-	private void ChangeMode(bool b){
+	private void changeMode(bool b){
 		_eraserMode = b;
 	}
 	private void OnGUI(){
-         GUI.DrawTexture(new Rect(mouse.x - (w / 2), mouse.y - (h / 2), w, h), cursor);
+		if(!Screencapture){
+			GUI.DrawTexture(new Rect(mouse.x - (w / 2), mouse.y - (h / 2), w, h), cursor);
+		}
+        
     }
 	private void Update(){
-		// Cursor
 		Vector2 currentMouseOrTouchPos;
 		mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
 		#if UNITY_EDITOR
@@ -102,7 +105,7 @@ public class SceneController : MonoBehaviour {
 				//For every result returned, output the name of the GameObject on the Canvas hit by the Ray
 				foreach (RaycastResult result in results)
 				{
-					// Debug.Log("Hit " + result.gameObject.name);
+					
 					var y = result.gameObject.GetComponent<CustomDespose>();
 					if (y !=null){
 						Destroy( result.gameObject);
@@ -113,10 +116,7 @@ public class SceneController : MonoBehaviour {
 				 
 				RectTransform gameObj = Instantiate(_prefab, _prefab.position, _prefab.rotation) as RectTransform;
 				gameObj.transform.SetParent (_parent.transform, true);
-				// gameObj.transform.position = new Vector3(currentMouseOrTouchPos.x, currentMouseOrTouchPos.y, 0);
 				gameObj.position = currentMouseOrTouchPos;
-				// Initial 10*10 -1
-				// w 16 -x
 				int temp = w/10;
 				gameObj.localScale = Vector3.one*temp;
 				gameObj.GetComponent<RawImage>().color = _colorPicker;

@@ -5,14 +5,15 @@ using System;
 public class GreenScript : MonoBehaviour {
 
 	private InputField myInput;
-	public delegate void MyDel(int variable);
-	public event MyDel GreeEvent;
+	// public delegate void MyDel(int variable);
+	public static event System.Action<int> GreeEvent;
 
 	void Start () {
 		myInput = this.GetComponent<InputField>();
-		myInput.onValueChanged.AddListener( delegate {OrdinaryFunc();});
+		myInput.onValueChanged.AddListener( delegate {onValueChanged();});
+		myInput.text = "255";
 	}
-	private void OrdinaryFunc(){
+	private void onValueChanged(){
 		int x;
 		if(myInput.text.All(char.IsDigit)){
 			if( Int32.TryParse(myInput.text, out x)){

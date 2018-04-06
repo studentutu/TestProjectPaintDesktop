@@ -5,14 +5,15 @@ using System;
 public class BlueScript : MonoBehaviour {
 
 	private InputField myInput;
-	public delegate void MyDel(int variable);
-	public event MyDel BlueEvent;
+	// public delegate void MyDel(int variable);
+	public static event System.Action<int> BlueEvent;
 
 	void Start () {
 		myInput = this.GetComponent<InputField>();
-		myInput.onValueChanged.AddListener( delegate {OrdinaryFunc();});
+		myInput.onValueChanged.AddListener( delegate {onValueChanged();});
+		myInput.text = "255";
 	}
-	private void OrdinaryFunc(){
+	private void onValueChanged(){
 		int x;
 		if(myInput.text.All(char.IsDigit)){
 			if( Int32.TryParse(myInput.text, out x)){
