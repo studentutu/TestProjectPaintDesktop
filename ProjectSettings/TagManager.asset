@@ -8,6 +8,9 @@ TagManager:
   - RED
   - GREEN
   - BLUE
+  - EVENT
+  - CANVAS
+  - PAINT
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - PAINTLAYER
   - 
   - 
   - 

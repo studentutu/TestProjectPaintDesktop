@@ -14,7 +14,7 @@ public class ColorPallete : MonoBehaviour {
 		this.GetComponent<Button>().onClick.AddListener(InternalFire);
 	}
 	private void InternalFire(){
-		Debug.Log(" In Publisher");
+		// Debug.Log(" In Publisher");
 		StartCoroutine(wait());
 		var _temp = new Color(1,1, 0);
 		// ending
