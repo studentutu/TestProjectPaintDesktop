@@ -1,6 +1,5 @@
 # TestProjectPaintDesktop
 
-## Test Project 
   **TO DO list:**
   
     * rewrite controller
